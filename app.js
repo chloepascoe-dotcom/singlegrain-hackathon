@@ -29,56 +29,6 @@
     const SLACK_API = '/api/slack';
     const saveStatus = document.getElementById('saveStatus');
     let saveTimeout, lastData = '{}';
-    let previousSignups = {};
-
-    // Map field names to readable project names
-    const projectNames = {
-        'seo-tigerclaw-lead': 'Tiger Claw (SEO Brain) - Lead',
-        'seo-project-1': 'AI Content Brief Generator',
-        'seo-project-2': 'Technical SEO Audit Workflow',
-        'seo-project-3': 'Competitor Gap Analyzer',
-        'paid-creative-claw-lead': 'Paid/Creative Claw (Brain) - Lead',
-        'paid-project-1': 'AI Media Mix Planner',
-        'paid-project-2': 'Audience Research Accelerator',
-        'paid-project-3': 'AI Competitor Ad Intelligence',
-        'creative-project-1': 'AI Ad Storyboard Generator',
-        'creative-project-2': 'Landing Page Copy & Wireframe Generator',
-        'creative-project-3': 'UGC Script & Brief Generator',
-        'crossteam-project-1': 'AI Sales Pitch Generator',
-        'crossteam-project-2': 'QBR Prep Assistant',
-        'crossteam-project-3': 'Open Slot Project'
-    };
-
-    async function notifySlack(project, person) {
-        try {
-            await fetch(SLACK_API, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ project, person })
-            });
-        } catch (e) {
-            console.log('Slack notification failed:', e);
-        }
-    }
-
-    function checkForNewSignups(oldData, newData) {
-        Object.keys(projectNames).forEach(field => {
-            const oldValue = (oldData[field] || '').trim();
-            const newValue = (newData[field] || '').trim();
-
-            if (newValue && newValue !== oldValue) {
-                // Find what was added
-                const oldNames = oldValue.split(',').map(n => n.trim()).filter(n => n);
-                const newNames = newValue.split(',').map(n => n.trim()).filter(n => n);
-
-                newNames.forEach(name => {
-                    if (!oldNames.includes(name)) {
-                        notifySlack(projectNames[field], name);
-                    }
-                });
-            }
-        });
-    }
 
     async function loadData() {
         try {
@@ -127,10 +77,6 @@
         const data = collectData();
         const dataStr = JSON.stringify(data);
         localStorage.setItem(STORAGE_KEY, dataStr);
-
-        // Check for new sign-ups and notify Slack
-        const oldData = JSON.parse(lastData || '{}');
-        checkForNewSignups(oldData, data);
 
         try {
             const res = await fetch(API_URL, {
