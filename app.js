@@ -174,6 +174,58 @@
         el.addEventListener('input', debouncedSave);
     });
 
+    // Submit button handlers
+    document.querySelectorAll('.signup-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const button = e.target;
+            const projectName = button.dataset.project;
+            const input = button.previousElementSibling;
+            const personName = input.value.trim();
+
+            if (!personName) {
+                input.focus();
+                input.style.borderColor = '#ef4444';
+                setTimeout(() => { input.style.borderColor = ''; }, 2000);
+                return;
+            }
+
+            // Disable button while submitting
+            button.disabled = true;
+            button.textContent = 'Sending...';
+
+            try {
+                // Send to Slack
+                const res = await fetch(SLACK_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ project: projectName, person: personName })
+                });
+
+                if (res.ok) {
+                    // Show success
+                    button.classList.add('success');
+                    button.textContent = 'Submitted!';
+
+                    // Save data to sync
+                    saveData();
+
+                    // Reset after 3 seconds
+                    setTimeout(() => {
+                        button.classList.remove('success');
+                        button.textContent = 'Submit';
+                        button.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (err) {
+                button.textContent = 'Error - Retry';
+                button.disabled = false;
+                console.error('Slack submission failed:', err);
+            }
+        });
+    });
+
     document.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveData(); }
     });

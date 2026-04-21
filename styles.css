@@ -565,6 +565,32 @@ body {
     box-shadow: 0 0 0 3px rgba(242, 112, 56, 0.1);
 }
 
+.signup-btn {
+    padding: 10px 20px;
+    background: var(--sg-orange);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.signup-btn:hover {
+    background: var(--sg-orange-light);
+}
+
+.signup-btn:disabled {
+    background: var(--sg-gray);
+    cursor: not-allowed;
+}
+
+.signup-btn.success {
+    background: #22c55e;
+}
+
 /* Demo Section */
 .demo-time {
     font-size: 16px;
