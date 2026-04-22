@@ -1,8 +1,3 @@
 {
-  "version": 2,
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/ai-escalation-matrix.html", "dest": "/ai-escalation-matrix.html" },
-    { "src": "/(.*)", "dest": "/app.js" }
-  ]
+  "version": 2
 }
