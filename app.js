@@ -124,9 +124,21 @@
     document.querySelectorAll('.signup-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             const button = e.target;
-            const projectName = button.dataset.project;
+            let projectName = button.dataset.project;
             const input = button.previousElementSibling;
             const personName = input.value.trim();
+
+            // Check if this is the Open Slot project - get the idea too
+            let projectIdea = '';
+            if (projectName === 'Open Slot Project') {
+                const ideaInput = document.querySelector('[data-field="crossteam-project-3-idea"]');
+                if (ideaInput) {
+                    projectIdea = ideaInput.value.trim();
+                    if (projectIdea) {
+                        projectName = projectIdea; // Use the idea as the project name
+                    }
+                }
+            }
 
             if (!personName) {
                 input.focus();
@@ -144,7 +156,7 @@
                 const res = await fetch(SLACK_API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ project: projectName, person: personName })
+                    body: JSON.stringify({ project: projectName, person: personName, isOpenSlot: projectIdea ? true : false })
                 });
 
                 if (res.ok) {

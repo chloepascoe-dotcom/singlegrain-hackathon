@@ -12,7 +12,10 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { project, person, action } = req.body;
+        const { project, person, isOpenSlot } = req.body;
+
+        const headerText = isOpenSlot ? "💡 New Project Proposal" : "🚀 Hackathon Sign-Up";
+        const projectLabel = isOpenSlot ? "*Proposed Project:*" : "*Project:*";
 
         const message = {
             blocks: [
@@ -20,7 +23,7 @@ export default async function handler(req, res) {
                     type: "header",
                     text: {
                         type: "plain_text",
-                        text: "🚀 Hackathon Sign-Up",
+                        text: headerText,
                         emoji: true
                     }
                 },
@@ -29,7 +32,7 @@ export default async function handler(req, res) {
                     fields: [
                         {
                             type: "mrkdwn",
-                            text: `*Project:*\n${project}`
+                            text: `${projectLabel}\n${project}`
                         },
                         {
                             type: "mrkdwn",
