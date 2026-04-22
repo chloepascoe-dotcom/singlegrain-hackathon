@@ -164,10 +164,19 @@
                     button.classList.add('success');
                     button.textContent = 'Submitted!';
 
-                    // Save data to sync
+                    // Clear the input field
+                    input.value = '';
+
+                    // If Open Slot, also clear the idea field
+                    if (projectIdea) {
+                        const ideaInput = document.querySelector('[data-field="crossteam-project-3-idea"]');
+                        if (ideaInput) ideaInput.value = '';
+                    }
+
+                    // Save data to sync (with cleared fields)
                     saveData();
 
-                    // Reset after 3 seconds
+                    // Reset button after 3 seconds
                     setTimeout(() => {
                         button.classList.remove('success');
                         button.textContent = 'Submit';
