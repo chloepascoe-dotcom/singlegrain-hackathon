@@ -591,6 +591,13 @@ body {
     background: #22c55e;
 }
 
+.char-count {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--sg-gray);
+    margin-left: 8px;
+}
+
 /* Demo Section */
 .demo-time {
     font-size: 16px;

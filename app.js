@@ -120,6 +120,19 @@
         el.addEventListener('input', debouncedSave);
     });
 
+    // Character count for Open Slot idea field
+    const ideaInput = document.querySelector('[data-field="crossteam-project-3-idea"]');
+    const charCount = document.getElementById('idea-char-count');
+    if (ideaInput && charCount) {
+        const updateCount = () => {
+            const len = ideaInput.value.length;
+            charCount.textContent = `${len}/500`;
+            charCount.style.color = len > 450 ? '#ef4444' : 'var(--sg-gray)';
+        };
+        ideaInput.addEventListener('input', updateCount);
+        updateCount(); // Initial count
+    }
+
     // Submit button handlers
     document.querySelectorAll('.signup-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
